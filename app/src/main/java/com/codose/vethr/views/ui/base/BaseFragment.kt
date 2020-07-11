@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -42,7 +43,7 @@ open class BaseFragment : Fragment() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView?.visibility = GONE
         val header = activity?.findViewById<TextView>(R.id.main_header_text)
-        val imgBtn = activity?.findViewById<TextView>(R.id.main_header_toggle)
+        val imgBtn = activity?.findViewById<ImageButton>(R.id.main_header_toggle)
         header?.visibility = GONE
         imgBtn?.visibility = GONE
     }
@@ -65,7 +66,7 @@ open class BaseFragment : Fragment() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView?.visibility = VISIBLE
         val header = activity?.findViewById<TextView>(R.id.main_header_text)
-        val imgBtn = activity?.findViewById<TextView>(R.id.main_header_toggle)
+        val imgBtn = activity?.findViewById<ImageButton>(R.id.main_header_toggle)
         header?.visibility = VISIBLE
         imgBtn?.visibility = VISIBLE
     }

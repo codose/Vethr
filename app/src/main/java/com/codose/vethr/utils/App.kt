@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.net.ConnectivityManager
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import com.pixplicity.easyprefs.library.Prefs
 
 
@@ -15,6 +16,12 @@ class App : Application() {
         super.onCreate()
         createNotificationChannel()
         initPrefs()
+        val isDarkMode = Prefs.getBoolean("themeMode",false)
+        if(isDarkMode){
+            Utils.setThemeMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            Utils.setThemeMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private fun initPrefs() {

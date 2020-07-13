@@ -90,6 +90,5 @@ dependencies {
     def lottieVersion = "3.4.1"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-
-
+    implementation 'io.nlopez.smartlocation:library:3.3.3'
 }

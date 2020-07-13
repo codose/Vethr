@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import com.codose.vethr.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 
 open class BaseFragment : Fragment() {
 
@@ -34,6 +35,15 @@ open class BaseFragment : Fragment() {
         view?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    fun showProgress(){
+        requireActivity().progressView.visibility = VISIBLE
+        requireActivity().mainProgressBar.visibility = VISIBLE
+    }
+    fun hideProgress(){
+        requireActivity().progressView.visibility = GONE
+        requireActivity().mainProgressBar.visibility = GONE
     }
     fun goBack(){
         requireActivity().onBackPressed()

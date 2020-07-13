@@ -1,6 +1,7 @@
 package com.codose.vethr.network.api
 
 import com.codose.vethr.utils.Constants.BASE_URL
+import com.codose.vethr.utils.Constants.PLACES_URL
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Cache
@@ -50,6 +51,14 @@ object RetrofitClient {
 
     fun vethrService() = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .addConverterFactory(gsonConverter)
+        .client(client)
+        .build()
+        .create(VethrService::class.java)
+
+    fun placeSearch() = Retrofit.Builder()
+        .baseUrl(PLACES_URL)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(gsonConverter)
         .client(client)

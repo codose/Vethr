@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardBackgroundColor="@color/bgGrey"
     app:cardCornerRadius="10dp"
     app:cardElevation="@dimen/cardview_compat_inset_shadow">
 
@@ -17,28 +17,26 @@
         android:layout_margin="16dp"
         android:visibility="visible">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/forecast_image"
             android:layout_width="68dp"
             android:layout_height="66dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorPrimaryDark"
-            android:contentDescription="TODO"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_night_toggle" />
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
 
 
         <TextView
             android:id="@+id/forecast_date"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:background="@color/colorPrimaryDark"
             android:fontFamily="@font/lato_regular"
             android:paddingTop="3dp"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/textColorSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="11/08/2020" />
@@ -47,12 +45,12 @@
             android:id="@+id/forecast_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="1dp"
-            android:background="@color/colorPrimaryDark"
             android:fontFamily="@font/lato_bold"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="40sp"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/forecast_date"
             app:layout_constraintTop_toBottomOf="@+id/forecast_date"

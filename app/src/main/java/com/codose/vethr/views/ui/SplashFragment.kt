@@ -1,13 +1,16 @@
 package com.codose.vethr.views.ui
 
+import android.Manifest
 import android.animation.Animator
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.codose.vethr.R
+import com.codose.vethr.utils.Utils
 import com.codose.vethr.views.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_splash.*
 
@@ -25,6 +28,9 @@ class SplashFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ActivityCompat.requestPermissions(requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),Utils.LOCATION)
+
         animation_view.addAnimatorListener(object : Animator.AnimatorListener{
             override fun onAnimationRepeat(animation: Animator?) {
             }
@@ -40,5 +46,6 @@ class SplashFragment : BaseFragment() {
             }
 
         })
+
     }
 }

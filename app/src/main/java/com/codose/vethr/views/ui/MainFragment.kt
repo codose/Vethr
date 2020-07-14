@@ -9,14 +9,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.codose.vethr.R
 import com.codose.vethr.utils.Resource
+import com.codose.vethr.utils.Utils
+import com.codose.vethr.utils.Utils.getTempString
+import com.codose.vethr.utils.Utils.longToDate
+import com.codose.vethr.views.adapter.ForecastClickListener
+import com.codose.vethr.views.adapter.ForecastRecyclerAdapter
 import com.codose.vethr.views.ui.base.BaseFragment
 import com.codose.vethr.views.viewmodels.MainViewModel
+import com.codose.vethr.views.viewmodels.MainViewModelFactory
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment() {
 
-    private val viewModel by lazy {
-        ViewModelProvider(requireActivity())[MainViewModel::class.java]
-    }
+    private lateinit var viewModel : MainViewModel
+    private lateinit var adapter: ForecastRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +35,16 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val factory = MainViewModelFactory(requireContext())
+        viewModel = ViewModelProvider(requireActivity(),factory)[MainViewModel::class.java]
+
+        adapter = ForecastRecyclerAdapter(requireContext(), ForecastClickListener {
+
+        })
+        forecast_list.adapter = adapter
         setUpObservers()
-        viewModel.getLocation(requireContext())
+
     }
 
     private fun setUpObservers() {
@@ -60,7 +74,13 @@ class MainFragment : BaseFragment() {
 
                 is Resource.Success -> {
                     hideProgress()
-                    showToast("Data Fetched")
+                    val data = it.data
+                    date_text.text = longToDate(data.current.dt)
+                    temp_text.text = getTempString(data.current.temp)
+                    location_text.text = data.timezone
+                    text_weather_description.text = data.current.weather[0].description
+                    view_forecast_image.setAnimation(Utils.getWeatherDrawable(data.current.weather[0].main))
+                    adapter.submitList(data.daily)
                 }
 
                 is Resource.Failure -> {

@@ -14,8 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:visibility="visible">
+        android:layout_margin="16dp">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/forecast_image"

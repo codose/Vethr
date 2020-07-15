@@ -52,7 +52,6 @@ object Utils {
                 //This is called if user has denied the permission before
                 //In this case I am just asking the permission again
 
-
                 ActivityCompat.requestPermissions(context, arrayOf(permission), requestCode!!)
                 Prefs.putBoolean("permission",true)
 

@@ -12,7 +12,7 @@ import com.codose.vethr.utils.Resource
 import com.codose.vethr.utils.Utils
 import com.codose.vethr.utils.Utils.getTempString
 import com.codose.vethr.utils.Utils.longToDate
-import com.codose.vethr.views.adapter.ForecastClickListener
+//import com.codose.vethr.views.adapter.ForecastClickListener
 import com.codose.vethr.views.adapter.ForecastRecyclerAdapter
 import com.codose.vethr.views.ui.base.BaseFragment
 import com.codose.vethr.views.viewmodels.MainViewModel
@@ -39,10 +39,11 @@ class MainFragment : BaseFragment() {
         val factory = MainViewModelFactory(requireContext())
         viewModel = ViewModelProvider(requireActivity(),factory)[MainViewModel::class.java]
 
-        adapter = ForecastRecyclerAdapter(requireContext(), ForecastClickListener {
+        forecast_list.adapter = ForecastRecyclerAdapter(requireContext(),
+            ForecastRecyclerAdapter.ForecastClickListener {
 
-        })
-        forecast_list.adapter = adapter
+            })
+
         setUpObservers()
 
     }

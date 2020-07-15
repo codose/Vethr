@@ -4,6 +4,7 @@ import android.app.DownloadManager
 import android.content.Context
 import android.location.Location
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,9 +20,23 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(context: Context) : ViewModel() {
     val repository = NetworkRepository()
-    val weatherData = MutableLiveData<Resource<WeatherResponse>>()
-    val placeData = MutableLiveData<Resource<PlaceResponse>>()
-    val location = MutableLiveData<Resource<Location>>()
+
+
+    private val _weatherData = MutableLiveData<Resource<WeatherResponse>>()
+    val weatherData: LiveData<Resource<WeatherResponse>>
+    get() = _weatherData
+
+    // The internal MutableLiveData String that stores the most recent response
+    private val _placeData = MutableLiveData<Resource<PlaceResponse>>()
+
+    // The external immutable LiveData for the response String
+    val placeData: LiveData<Resource<PlaceResponse>>
+    get() = _placeData
+
+
+    private val _location = MutableLiveData<Resource<Location>>()
+    val location: LiveData<Resource<Location>>
+    get() = _location
 
     init {
         getLocation(context)
@@ -29,31 +44,31 @@ class MainViewModel(context: Context) : ViewModel() {
 
 
     fun getWeatherData(lat:Double,long: Double){
-        weatherData.value = Resource.Loading()
+        _weatherData.value = Resource.Loading()
         viewModelScope.launch {
-            weatherData.value = withContext(Dispatchers.IO){
+            _weatherData.value = withContext(Dispatchers.IO){
                 repository.getWeatherData(lat, long)
             }
         }
     }
 
     fun getLocation(context:Context){
-        location.value = Resource.Loading()
+        _location.value = Resource.Loading()
         SmartLocation.with(context).location()
             .oneFix()
             .start {
                 if(it!=null){
-                    location.value = Resource.Success(it)
+                    _location.value = Resource.Success(it)
                 }else{
-                    location.value = Resource.Failure("Unable to get Location")
+                    _location.value = Resource.Failure("Unable to get Location")
                 }
             }
     }
 
     fun searchPlace(query: String){
-        placeData.value = Resource.Loading()
+        _placeData.value = Resource.Loading()
         viewModelScope.launch {
-            placeData.value = withContext(Dispatchers.IO){
+            _placeData.value = withContext(Dispatchers.IO){
                 repository.searchPlaces(query)
             }
         }

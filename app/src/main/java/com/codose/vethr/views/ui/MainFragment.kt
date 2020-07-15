@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navGraphViewModels
 import com.codose.vethr.R
 import com.codose.vethr.utils.Resource
 import com.codose.vethr.utils.Utils
@@ -16,12 +17,11 @@ import com.codose.vethr.views.adapter.ForecastClickListener
 import com.codose.vethr.views.adapter.ForecastRecyclerAdapter
 import com.codose.vethr.views.ui.base.BaseFragment
 import com.codose.vethr.views.viewmodels.MainViewModel
-import com.codose.vethr.views.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment() {
 
-    private lateinit var viewModel : MainViewModel
+    private val viewModel : MainViewModel by navGraphViewModels(R.id.main_nav_graph)
     private lateinit var adapter: ForecastRecyclerAdapter
 
     override fun onCreateView(
@@ -36,15 +36,11 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = MainViewModelFactory(requireContext())
-        viewModel = ViewModelProvider(requireActivity(),factory)[MainViewModel::class.java]
-
         adapter = ForecastRecyclerAdapter(requireContext(), ForecastClickListener {
 
         })
         forecast_list.adapter = adapter
         setUpObservers()
-
     }
 
     private fun setUpObservers() {
@@ -56,7 +52,7 @@ class MainFragment : BaseFragment() {
 
                 is Resource.Success -> {
                     val location = it.data
-                    viewModel.getWeatherData(location.latitude, location.longitude)
+
                 }
 
                 is Resource.Failure -> {

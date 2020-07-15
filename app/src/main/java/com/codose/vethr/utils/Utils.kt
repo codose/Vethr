@@ -37,7 +37,7 @@ object Utils {
 
     fun longToDate(date:Long):String{
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-        val mDate = Date(date)
+        val mDate = Date(date*1000)
         return sdf.format(mDate)
     }
 

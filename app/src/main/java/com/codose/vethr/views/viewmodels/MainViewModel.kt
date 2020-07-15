@@ -1,9 +1,11 @@
 package com.codose.vethr.views.viewmodels
 
+import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
 import android.location.Location
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,14 +19,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(context: Context) : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     val repository = NetworkRepository()
+    private val context = getApplication<Application>().applicationContext
     val weatherData = MutableLiveData<Resource<WeatherResponse>>()
     val placeData = MutableLiveData<Resource<PlaceResponse>>()
     val location = MutableLiveData<Resource<Location>>()
 
     init {
-        getLocation(context)
+        getLocation()
     }
 
 
@@ -37,12 +40,13 @@ class MainViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getLocation(context:Context){
+    fun getLocation(){
         location.value = Resource.Loading()
         SmartLocation.with(context).location()
             .oneFix()
             .start {
                 if(it!=null){
+                    getWeatherData(it.latitude, it.longitude)
                     location.value = Resource.Success(it)
                 }else{
                     location.value = Resource.Failure("Unable to get Location")

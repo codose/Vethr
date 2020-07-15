@@ -37,14 +37,6 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun showProgress(){
-        requireActivity().progressView.visibility = VISIBLE
-        requireActivity().mainProgressBar.visibility = VISIBLE
-    }
-    fun hideProgress(){
-        requireActivity().progressView.visibility = GONE
-        requireActivity().mainProgressBar.visibility = GONE
-    }
     fun goBack(){
         requireActivity().onBackPressed()
     }

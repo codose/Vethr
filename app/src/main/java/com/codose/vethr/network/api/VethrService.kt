@@ -14,6 +14,7 @@ interface VethrService {
                        @Query("exclude") exclude : List<String> = listOf("hourly","minutely"),
                        @Query("appId") appId : String = API_KEY, @Query("units") units : String = "metric") : Deferred<WeatherResponse>
 
+    @GET("v1/discover")
     fun getPlaces(@Query("q") query : String,
                   @Query("limit") limit : String = "20",
                   @Query("apiKey") key : String = "TaeGeDn_vUCNV_4FSBV-iz5E8mCtumY_cZ2vR5b3okQ",

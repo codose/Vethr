@@ -55,20 +55,18 @@ class ForecastRecyclerAdapter(val context : Context, val clickListener: Forecast
         val item = getItem(position)
         holder.bind(context, position ,item,clickListener)
     }
+}
+class ForecastClickListener(val clickListener: (forecast : Daily) -> Unit){
+    fun onClick(forecast: Daily) = clickListener(forecast)
+}
 
-    class ForecastClickListener(val clickListener: (forecast : Daily) -> Unit){
-        fun onClick(forecast: Daily) = clickListener(forecast)
+class ForecastDiffCallback : DiffUtil.ItemCallback<Daily>(){
+    override fun areItemsTheSame(oldItem: Daily, newItem: Daily): Boolean {
+        return oldItem == newItem
     }
 
-    class ForecastDiffCallback : DiffUtil.ItemCallback<Daily>(){
-        override fun areItemsTheSame(oldItem: Daily, newItem: Daily): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Daily, newItem: Daily): Boolean {
-            return oldItem == newItem
-        }
+    override fun areContentsTheSame(oldItem: Daily, newItem: Daily): Boolean {
+        return oldItem == newItem
     }
-
 }
 

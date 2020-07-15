@@ -27,11 +27,39 @@
     </style>
 
     <style name="Base.Widget.MaterialComponents.TextInputLayout.Curve" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxCornerRadiusBottomEnd">12dp</item>
-        <item name="boxCornerRadiusBottomStart">12dp</item>
-        <item name="boxCornerRadiusTopEnd">12dp</item>
-        <item name="boxCornerRadiusTopStart">12dp</item>
-
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius</item>
+        <item name="boxStrokeColor">@null</item>
+        <item name="backgroundTint">@color/bgGrey</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="hintTextAppearance">@style/TextAppearance.TextMedium</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
 
+    <style name="TextInputLayout.NoOutline.Profile" parent="Base.Widget.MaterialComponents.TextInputLayout.Curve">
+        <item name="boxStrokeColor">@null</item>
+        <item name="android:textAppearance">@style/TextAppearance.TextRegular</item>
+        <item name="android:textColorHint">@color/textColorSecondary</item>
+        <item name="boxStrokeWidth">0dp</item>
+    </style>
+
+    <style name="TextInputLayout.NoOutline" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:textAppearance">@style/TextAppearance.TextRegular</item>
+        <item name="android:textColorHint">@color/textColorSecondary</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="hintEnabled">false</item>
+    </style>
+    
+    <style name="Base.V7.Widget.AppCompat.EditText.Padding" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <dimen name="radius">10dp</dimen>
 </resources>

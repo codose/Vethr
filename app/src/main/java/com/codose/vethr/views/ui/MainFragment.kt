@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
 import com.codose.vethr.R
@@ -45,7 +46,9 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            requireActivity().finish()
+        }
         adapter = ForecastRecyclerAdapter(requireContext(), ForecastClickListener {
 
         })
@@ -110,6 +113,15 @@ class MainFragment : BaseFragment() {
         })
     }
 
+    private fun showProgress(){
+        progressView.visibility = View.VISIBLE
+        mainProgressBar.visibility = View.VISIBLE
+    }
+    private fun hideProgress(){
+        progressView.visibility = View.GONE
+        mainProgressBar.visibility = View.GONE
+    }
+
     private fun setupChart(items: List<Daily>) {
 
         val entries = ArrayList<Entry>()
@@ -167,7 +179,7 @@ class MainFragment : BaseFragment() {
 
         val data = LineData(dataSets)
         weather_chart.data = data
-        weather_chart.animateY(2000,Easing.Linear)
+        weather_chart.animateY(1000,Easing.Linear)
         weather_chart.invalidate()
         weather_chart.legend.isEnabled = false
         weather_chart.description.isEnabled = false

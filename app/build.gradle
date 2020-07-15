@@ -92,5 +92,6 @@ dependencies {
 
     implementation 'io.nlopez.smartlocation:library:3.3.3'
     implementation 'com.nabinbhandari.android:permissions:3.8'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 }

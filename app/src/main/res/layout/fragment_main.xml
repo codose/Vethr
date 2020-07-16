@@ -133,13 +133,12 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/background"
+                android:clickable="true"
                 android:visibility="gone"
-                android:elevation="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:clickable="true"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
                 android:id="@+id/mainProgressBar"

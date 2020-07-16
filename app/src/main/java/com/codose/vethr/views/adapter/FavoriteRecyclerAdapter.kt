@@ -13,6 +13,7 @@ import com.codose.vethr.R
 import com.codose.vethr.models.Favourite
 import com.codose.vethr.utils.Utils
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.list_item_favorite.view.*
 import java.util.*
 import java.util.Date.from
 
@@ -22,7 +23,7 @@ Oshodin Osemwingie
 
 on 6/04/2020.
 */
-class FavoriteRecyclerAdapter(val context : Context, val clickListener: FavouriteClickListener) :
+class FavoriteRecyclerAdapter(val context : Context, val clickListener: FavouriteClickListener, val deleteFav : FavouriteClickListener) :
     ListAdapter<Favourite, FavoriteRecyclerAdapter.MyViewHolder>(FavouriteDiffCallback()) {
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -31,10 +32,15 @@ class FavoriteRecyclerAdapter(val context : Context, val clickListener: Favourit
             context: Context,
             id: Int,
             item: Favourite,
-            clickListener: FavouriteClickListener
+            clickListener: FavouriteClickListener,
+            deleteFav: FavouriteClickListener
         ) {
             itemView.setOnClickListener { 
                 clickListener.onClick(item)
+            }
+            itemView.favorite_text.text = item.location
+            itemView.toggleButton.setOnClickListener {
+                deleteFav.onClick(item)
             }
         }
     }
@@ -46,13 +52,13 @@ class FavoriteRecyclerAdapter(val context : Context, val clickListener: Favourit
 
     private fun from(parent: ViewGroup) : MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_search,parent,false)
+        val view = layoutInflater.inflate(R.layout.list_item_favorite,parent,false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(context, position ,item,clickListener)
+        holder.bind(context, position ,item,clickListener,deleteFav)
     }
 }
 class FavouriteClickListener(val clickListener: (Favourite : Favourite) -> Unit){

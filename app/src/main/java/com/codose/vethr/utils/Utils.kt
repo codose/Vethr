@@ -15,9 +15,7 @@ import java.util.*
 
 object Utils {
     val LOCATION = 0x1
-    val GPS_SETTINGS = 0x7//GPS Setting
 
-    val MY_PERMISSIONS_REQUEST_LOCATION = 99
     fun getWeatherDrawable(data: String) : Int{
         return when(data){
             "Clouds" -> R.raw.cloud

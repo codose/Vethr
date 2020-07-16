@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="16dp"
     app:cardBackgroundColor="@color/bgGrey"
     app:cardCornerRadius="10dp"
     app:cardElevation="@dimen/cardview_compat_inset_shadow">
@@ -35,7 +35,7 @@
             android:id="@+id/description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            tools:text="@string/Lagos"
             android:textAppearance="@style/TextAppearance.TextRegular"
             android:textColor="@color/textColorSecondary"
             android:textSize="14sp"

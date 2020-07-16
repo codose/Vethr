@@ -13,17 +13,12 @@ import com.codose.vethr.R
 import com.codose.vethr.network.response.searchResponse.Item
 import kotlinx.android.synthetic.main.list_item_search.view.*
 
-class SearchRecyclerAdapter(val context : Context, val clickListener: SearchClickListener) :
+class SearchRecyclerAdapter(val context : Context, private val clickListener: SearchClickListener) :
     ListAdapter<Item, SearchRecyclerAdapter.MyViewHolder>(SearchDiffCallback()) {
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
-        fun bind(
-            context: Context,
-            id: Int,
-            item: Item,
-            clickListener: SearchClickListener
-        ) {
+        fun bind(context: Context, id: Int, item: Item, clickListener: SearchClickListener) {
             itemView.setOnClickListener {
                 clickListener.onClick(item)
             }

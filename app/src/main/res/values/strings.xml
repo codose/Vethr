@@ -5,4 +5,6 @@
     <string name="weather_forecast">Weather Forecast</string>
     <string name="weather_trends">Weather Trends</string>
     <string name="choose_location">Choose Location</string>
+    <string name="Lagos">TextView</string>
+    <string name="toggle_button">ToggleButton</string>
 </resources>

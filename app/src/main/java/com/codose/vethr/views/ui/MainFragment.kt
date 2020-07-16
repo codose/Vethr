@@ -34,7 +34,7 @@ class MainFragment : BaseFragment() {
 
     private val viewModel : MainViewModel by navGraphViewModels(R.id.main_nav_graph)
     private lateinit var adapter: ForecastRecyclerAdapter
-
+    private var isRefreshing = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +46,10 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_refresh.setOnRefreshListener {
+            isRefreshing = true
+            viewModel.getLocation()
+        }
         requireActivity().onBackPressedDispatcher.addCallback(this){
             requireActivity().finish()
         }
@@ -72,7 +76,9 @@ class MainFragment : BaseFragment() {
         viewModel.location.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> {
-                    showProgress()
+                    if(!isRefreshing){
+                        showProgress()
+                    }
                 }
 
                 is Resource.Success -> {
@@ -90,7 +96,9 @@ class MainFragment : BaseFragment() {
         viewModel.weatherData.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> {
-                    showProgress()
+                    if(!isRefreshing){
+                        showProgress()
+                    }
                 }
 
                 is Resource.Success -> {
@@ -101,6 +109,7 @@ class MainFragment : BaseFragment() {
                     text_weather_description.text = data.current.weather[0].description
                     view_forecast_image.setAnimation(Utils.getWeatherDrawable(data.current.weather[0].main))
                     adapter.submitList(data.daily)
+                    swipe_refresh.isRefreshing = false
                     setupChart(data.daily)
                 }
 

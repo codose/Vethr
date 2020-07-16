@@ -28,14 +28,32 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_dialog.*
 
-class DetailBottomSheetDialogFragment(private var lat: Double, private var long : Double, private var location: String) : BottomSheetDialogFragment() {
+class DetailBottomSheetDialogFragment() : BottomSheetDialogFragment() {
     private val viewModel : MainViewModel by navGraphViewModels(R.id.main_nav_graph)
     private lateinit var adapter: ForecastRecyclerAdapter
+    private var lat: Double =0.0
+    private var long: Double =0.0
+    private var location: String =""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheet)
     }
+
+    companion object{
+        fun newInstance(lat: Double,long : Double,location: String) : DetailBottomSheetDialogFragment{
+            val args = Bundle()
+            args.putDouble("lat",lat)
+            args.putDouble("long",long)
+            args.putString("location",location)
+            val fragment = DetailBottomSheetDialogFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+
 
 
     override fun onCreateView(
@@ -50,6 +68,10 @@ class DetailBottomSheetDialogFragment(private var lat: Double, private var long 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        long =  requireArguments().getDouble("long")
+        lat =  requireArguments().getDouble("lat")
+        location =  requireArguments().getString("location")!!
+
         viewModel.getWeatherData(lat,long)
 
         val observer = Observer<List<Favourite>> {

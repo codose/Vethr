@@ -36,7 +36,7 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = SearchRecyclerAdapter(requireContext(), SearchClickListener { item: Item, s: String ->
-            val bottomSheetDialogFragment = DetailBottomSheetDialogFragment(item.position.lat,item.position.lng,s)
+            val bottomSheetDialogFragment = DetailBottomSheetDialogFragment.newInstance(item.position.lat,item.position.lng,s)
             bottomSheetDialogFragment.show(requireActivity().supportFragmentManager,"BottomSheetDialog")
         })
         search_bar_rv.adapter = adapter

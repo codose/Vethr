@@ -24,9 +24,7 @@ class SearchRecyclerAdapter(val context : Context, val clickListener: SearchClic
             item: Item,
             clickListener: SearchClickListener
         ) {
-            itemView.setOnClickListener {
-                clickListener.onClick(item)
-            }
+
             val address = item.address
             val state = if(address.state == null) "" else address.state+","
             val street = if(address.street == null) "" else address.street+","
@@ -36,6 +34,9 @@ class SearchRecyclerAdapter(val context : Context, val clickListener: SearchClic
             }
             itemView.search_text.text = "${state}${address.countryName}"
             itemView.description_text.text = "${street}${city}"
+            itemView.setOnClickListener {
+                clickListener.onClick(item,"${state}${address.countryName}")
+            }
         }
     }
 
@@ -55,8 +56,8 @@ class SearchRecyclerAdapter(val context : Context, val clickListener: SearchClic
         holder.bind(context, position ,item,clickListener)
     }
 }
-class SearchClickListener(val clickListener: (Search : Item) -> Unit){
-    fun onClick(Search: Item) = clickListener(Search)
+class SearchClickListener(val clickListener: (Search : Item, location:String) -> Unit){
+    fun onClick(Search: Item, location: String) = clickListener(Search, location)
 }
 
 class SearchDiffCallback : DiffUtil.ItemCallback<Item>(){

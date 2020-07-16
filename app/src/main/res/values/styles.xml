@@ -61,5 +61,13 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <style name="CustomBottomSheet" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <dimen name="radius">10dp</dimen>
 </resources>

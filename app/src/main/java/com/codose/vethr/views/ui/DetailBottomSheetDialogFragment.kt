@@ -1,57 +1,76 @@
 package com.codose.vethr.views.ui
 
-import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
 import com.codose.vethr.R
+import com.codose.vethr.models.Favourite
 import com.codose.vethr.network.response.weatherResponse.Daily
 import com.codose.vethr.utils.Resource
 import com.codose.vethr.utils.Utils
-import com.codose.vethr.utils.Utils.getTempString
-import com.codose.vethr.utils.Utils.longToDate
 import com.codose.vethr.views.adapter.ForecastClickListener
 import com.codose.vethr.views.adapter.ForecastRecyclerAdapter
-import com.codose.vethr.views.ui.base.BaseFragment
 import com.codose.vethr.views.viewmodels.MainViewModel
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.fragment_dialog.*
 
-
-class MainFragment : BaseFragment() {
-
+class DetailBottomSheetDialogFragment(private var lat: Double, private var long : Double, private var location: String) : BottomSheetDialogFragment() {
     private val viewModel : MainViewModel by navGraphViewModels(R.id.main_nav_graph)
     private lateinit var adapter: ForecastRecyclerAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheet)
+    }
+
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        showBottomNav()
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_dialog, container, false)
     }
+    lateinit var favourite: Favourite
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            requireActivity().finish()
+        viewModel.getWeatherData(lat,long)
+
+        val observer = Observer<List<Favourite>> {
+            for(fav in it){
+                if(fav.location.equals(location)){
+                    dialog_favorite.isChecked = true
+                    favourite = fav
+                }
+            }
         }
+        viewModel.allFavs!!.observe(viewLifecycleOwner,observer)
         adapter = ForecastRecyclerAdapter(requireContext(), ForecastClickListener {
 
         })
+        dialog_favorite.setOnClickListener {
+            if(dialog_favorite.isChecked){
+                insertFavourite()
+            }else{
+                deleteFavourite()
+            }
+        }
         //customization
         weather_chart.setTouchEnabled(true)
         weather_chart.isDragEnabled = true
@@ -68,6 +87,18 @@ class MainFragment : BaseFragment() {
         setUpObservers()
     }
 
+    private fun deleteFavourite() {
+        viewModel.deleteFav(favourite)
+    }
+
+    private fun insertFavourite() {
+        favourite = Favourite()
+        favourite.lat = lat
+        favourite.long = long
+        favourite.location = location
+        viewModel.insertFav(favourite)
+    }
+
     private fun setUpObservers() {
         viewModel.location.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -76,12 +107,10 @@ class MainFragment : BaseFragment() {
                 }
 
                 is Resource.Success -> {
-                    val location = it.data
 
                 }
 
                 is Resource.Failure -> {
-                    showToast(it.message)
                     hideProgress()
                 }
             }
@@ -96,8 +125,9 @@ class MainFragment : BaseFragment() {
                 is Resource.Success -> {
                     hideProgress()
                     val data = it.data
-                    date_text.text = longToDate(data.current.dt)
-                    temp_text.text = getTempString(data.current.temp)
+                    date_text.text = Utils.longToDate(data.current.dt)
+                    temp_text.text = Utils.getTempString(data.current.temp)
+                    location_text.text = location
                     text_weather_description.text = data.current.weather[0].description
                     view_forecast_image.setAnimation(Utils.getWeatherDrawable(data.current.weather[0].main))
                     adapter.submitList(data.daily)
@@ -105,28 +135,10 @@ class MainFragment : BaseFragment() {
                 }
 
                 is Resource.Failure -> {
-                    showToast(it.message)
                     hideProgress()
                 }
             }
         })
-
-        viewModel.locationString.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading -> {
-                }
-
-                is Resource.Success -> {
-                    val data = it.data
-                    location_text.text = data
-                }
-
-                is Resource.Failure -> {
-                    showToast(it.message)
-                }
-            }
-        })
-
     }
 
     private fun showProgress(){
@@ -144,7 +156,7 @@ class MainFragment : BaseFragment() {
         val strings =ArrayList<String>()
         var i=1F
         for(data in items){
-            strings.add(longToDate(data.dt))
+            strings.add(Utils.longToDate(data.dt))
             entries.add(Entry(i,data.temp.max.toFloat()))
             i+=1
         }
@@ -195,7 +207,7 @@ class MainFragment : BaseFragment() {
 
         val data = LineData(dataSets)
         weather_chart.data = data
-        weather_chart.animateY(1000,Easing.Linear)
+        weather_chart.animateY(1000, Easing.Linear)
         weather_chart.invalidate()
         weather_chart.legend.isEnabled = false
         weather_chart.description.isEnabled = false

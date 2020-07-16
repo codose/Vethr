@@ -64,4 +64,12 @@ object RetrofitClient {
         .client(client)
         .build()
         .create(VethrService::class.java)
+
+    fun locationService() = Retrofit.Builder()
+        .baseUrl(PLACES_URL)
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .addConverterFactory(gsonConverter)
+        .client(client)
+        .build()
+        .create(VethrService::class.java)
 }

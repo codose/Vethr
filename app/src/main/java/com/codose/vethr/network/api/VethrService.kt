@@ -1,5 +1,6 @@
 package com.codose.vethr.network.api
 
+import com.codose.vethr.network.response.location.LocationResponse
 import com.codose.vethr.network.response.searchResponse.PlaceResponse
 import com.codose.vethr.network.response.weatherResponse.WeatherResponse
 import com.codose.vethr.utils.Constants.API_KEY
@@ -19,4 +20,9 @@ interface VethrService {
                   @Query("limit") limit : String = "20",
                   @Query("apiKey") key : String = "TaeGeDn_vUCNV_4FSBV-iz5E8mCtumY_cZ2vR5b3okQ",
                   @Query("at") log_lat : String = "6.465422,3.406448") : Deferred<PlaceResponse>
+
+    @GET("v1/revgeocode")
+    fun getLocation(@Query("at") at : String,
+                  @Query("limit") limit : String = "5",
+                  @Query("apiKey") key : String = "TaeGeDn_vUCNV_4FSBV-iz5E8mCtumY_cZ2vR5b3okQ") : Deferred<LocationResponse>
 }

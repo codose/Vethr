@@ -60,13 +60,12 @@ class SleepDatabaseTest {
         db.close()
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun insertAndGetNight() {
-        val night = Favourite()
-        favoriteDao.insert(night)
-        val favourite = favoriteDao.getAllFavorites()
-        assertEquals(favourite.value!!.size, 1)
-    }
+//    @Test
+//    @Throws(Exception::class)
+//    fun insertAndGetNight() {
+//        val night = Favourite()
+//        val favourite = favoriteDao.getAllFavorites()
+//        assertEquals(favourite.value!!.size, 1)
+//    }
 }
 

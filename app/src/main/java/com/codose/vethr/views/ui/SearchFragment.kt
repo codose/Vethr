@@ -12,6 +12,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
 import com.codose.vethr.R
+import com.codose.vethr.network.response.searchResponse.Item
 import com.codose.vethr.utils.Resource
 import com.codose.vethr.views.adapter.SearchClickListener
 import com.codose.vethr.views.adapter.SearchRecyclerAdapter
@@ -34,8 +35,9 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = SearchRecyclerAdapter(requireContext(), SearchClickListener {
-
+        adapter = SearchRecyclerAdapter(requireContext(), SearchClickListener { item: Item, s: String ->
+            val bottomSheetDialogFragment = DetailBottomSheetDialogFragment(item.position.lat,item.position.lng,s)
+            bottomSheetDialogFragment.show(requireActivity().supportFragmentManager,"BottomSheetDialog")
         })
         search_bar_rv.adapter = adapter
         search_bar_layout.setEndIconOnClickListener {

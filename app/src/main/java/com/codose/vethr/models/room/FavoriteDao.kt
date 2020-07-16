@@ -10,10 +10,10 @@ import com.codose.vethr.models.Favourite
 @Dao
 interface FavoriteDao {
     @Insert
-    fun insert(favourite: Favourite)
+    suspend fun insert(favourite: Favourite)
 
     @Delete
-    fun delete(favourite: Favourite)
+    suspend fun delete(favourite: Favourite)
 
     @Query("SELECT * FROM favourite_table ORDER BY id DESC")
     fun getAllFavorites(): LiveData<List<Favourite>>

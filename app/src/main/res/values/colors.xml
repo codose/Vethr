@@ -10,4 +10,5 @@
     <color name="background">#FFFFFF</color>
     <color name="textInputBg">#EFEFEF</color>
     <color name="mtrl_textinput_default_stroke_box_color">@color/bgGrey</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>

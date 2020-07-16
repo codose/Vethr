@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codose.vethr.R
-import com.codose.vethr.network.response.weatherResponse.Daily
+import com.codose.vethr.models.Favourite
 import com.codose.vethr.utils.Utils
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.list_item_weather_forecast.view.*
 import java.util.*
 import java.util.Date.from
 
@@ -23,21 +22,20 @@ Oshodin Osemwingie
 
 on 6/04/2020.
 */
-class ForecastRecyclerAdapter(val context : Context, val clickListener: ForecastClickListener) :
-    ListAdapter<Daily, ForecastRecyclerAdapter.MyViewHolder>(ForecastDiffCallback()) {
+class FavoriteRecyclerAdapter(val context : Context, val clickListener: FavouriteClickListener) :
+    ListAdapter<Favourite, FavoriteRecyclerAdapter.MyViewHolder>(FavouriteDiffCallback()) {
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bind(
             context: Context,
             id: Int,
-            item: Daily,
-            clickListener: ForecastClickListener
+            item: Favourite,
+            clickListener: FavouriteClickListener
         ) {
-            itemView.item_weather_text.text = item.weather[0].description
-            itemView.forecast_date.text = Utils.longToDate(item.dt)
-            itemView.forecast_temp.text = Utils.getTempString(item.temp.max)
-            itemView.forecast_image.setAnimation(Utils.getWeatherDrawable(item.weather[0].main))
+            itemView.setOnClickListener { 
+                clickListener.onClick(item)
+            }
         }
     }
 
@@ -48,7 +46,7 @@ class ForecastRecyclerAdapter(val context : Context, val clickListener: Forecast
 
     private fun from(parent: ViewGroup) : MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_weather_forecast,parent,false)
+        val view = layoutInflater.inflate(R.layout.list_item_search,parent,false)
         return MyViewHolder(view)
     }
 
@@ -57,16 +55,16 @@ class ForecastRecyclerAdapter(val context : Context, val clickListener: Forecast
         holder.bind(context, position ,item,clickListener)
     }
 }
-class ForecastClickListener(val clickListener: (forecast : Daily) -> Unit){
-    fun onClick(forecast: Daily) = clickListener(forecast)
+class FavouriteClickListener(val clickListener: (Favourite : Favourite) -> Unit){
+    fun onClick(Favourite: Favourite) = clickListener(Favourite)
 }
 
-class ForecastDiffCallback : DiffUtil.ItemCallback<Daily>(){
-    override fun areItemsTheSame(oldItem: Daily, newItem: Daily): Boolean {
+class FavouriteDiffCallback : DiffUtil.ItemCallback<Favourite>(){
+    override fun areItemsTheSame(oldItem: Favourite, newItem: Favourite): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Daily, newItem: Daily): Boolean {
+    override fun areContentsTheSame(oldItem: Favourite, newItem: Favourite): Boolean {
         return oldItem == newItem
     }
 }

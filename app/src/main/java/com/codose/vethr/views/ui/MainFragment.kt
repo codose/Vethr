@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.Observer
@@ -87,8 +88,11 @@ class MainFragment : BaseFragment() {
                 }
 
                 is Resource.Failure -> {
-                    showToast(it.message)
-                    hideProgress()
+                    showToast("Network Error")
+                    swipe_refresh.isRefreshing = false
+                    if(!isRefreshing){
+                        showError()
+                    }
                 }
             }
         })
@@ -114,8 +118,11 @@ class MainFragment : BaseFragment() {
                 }
 
                 is Resource.Failure -> {
-                    showToast(it.message)
-                    hideProgress()
+                    showToast("Network Error")
+                    swipe_refresh.isRefreshing = false
+                    if(!isRefreshing){
+                        showError()
+                    }
                 }
             }
         })
@@ -131,20 +138,31 @@ class MainFragment : BaseFragment() {
                 }
 
                 is Resource.Failure -> {
-                    showToast(it.message)
+
                 }
             }
         })
 
     }
 
+    private fun showError() {
+        progressView.visibility = VISIBLE
+        mainProgressBar.visibility = GONE
+        error_text.visibility = VISIBLE
+        network_error.visibility = VISIBLE
+    }
+
     private fun showProgress(){
-        progressView.visibility = View.VISIBLE
-        mainProgressBar.visibility = View.VISIBLE
+        progressView.visibility = VISIBLE
+        mainProgressBar.visibility = VISIBLE
+        error_text.visibility = GONE
+        network_error.visibility = GONE
     }
     private fun hideProgress(){
-        progressView.visibility = View.GONE
-        mainProgressBar.visibility = View.GONE
+        progressView.visibility = GONE
+        mainProgressBar.visibility = GONE
+        error_text.visibility = GONE
+        network_error.visibility = GONE
     }
 
     private fun setupChart(items: List<Daily>) {

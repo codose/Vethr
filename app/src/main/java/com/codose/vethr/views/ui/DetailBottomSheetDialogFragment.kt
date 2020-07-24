@@ -27,6 +27,17 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_dialog.*
+import kotlinx.android.synthetic.main.fragment_dialog.date_text
+import kotlinx.android.synthetic.main.fragment_dialog.forecast_list
+import kotlinx.android.synthetic.main.fragment_dialog.location_text
+import kotlinx.android.synthetic.main.fragment_dialog.mainProgressBar
+import kotlinx.android.synthetic.main.fragment_dialog.network_error
+import kotlinx.android.synthetic.main.fragment_dialog.progressView
+import kotlinx.android.synthetic.main.fragment_dialog.temp_text
+import kotlinx.android.synthetic.main.fragment_dialog.text_weather_description
+import kotlinx.android.synthetic.main.fragment_dialog.view_forecast_image
+import kotlinx.android.synthetic.main.fragment_dialog.weather_chart
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class DetailBottomSheetDialogFragment() : BottomSheetDialogFragment() {
     private val viewModel : MainViewModel by navGraphViewModels(R.id.main_nav_graph)
@@ -133,10 +144,13 @@ class DetailBottomSheetDialogFragment() : BottomSheetDialogFragment() {
                 }
 
                 is Resource.Failure -> {
-                    hideProgress()
+                    showError()
                 }
             }
         })
+
+
+
 
         viewModel.weatherData.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -157,7 +171,7 @@ class DetailBottomSheetDialogFragment() : BottomSheetDialogFragment() {
                 }
 
                 is Resource.Failure -> {
-                    hideProgress()
+                    showError()
                 }
             }
         })
@@ -166,6 +180,12 @@ class DetailBottomSheetDialogFragment() : BottomSheetDialogFragment() {
     private fun showProgress(){
         progressView.visibility = View.VISIBLE
         mainProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun showError() {
+        progressView.visibility = View.VISIBLE
+        mainProgressBar.visibility = View.GONE
+        network_error.visibility = View.VISIBLE
     }
     private fun hideProgress(){
         progressView.visibility = View.GONE

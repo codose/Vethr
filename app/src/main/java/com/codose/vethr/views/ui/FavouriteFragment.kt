@@ -41,6 +41,14 @@ class FavouriteFragment : BaseFragment() {
         favorite_rv.adapter = adapter
         val observer = Observer<List<Favourite>> {
             adapter.submitList(it)
+            if (it.isEmpty()){
+                imageView.visibility = View.VISIBLE
+                textView.visibility = View.VISIBLE
+            }
+            else{
+                imageView.visibility = View.GONE
+                textView.visibility = View.GONE
+            }
         }
         viewModel.allFavs!!.observe(viewLifecycleOwner,observer)
     }
